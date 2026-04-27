@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF417 Gen v1 — by Redoun</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/pdf417-generator/dist/pdf417.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-badge"><span class="dot"></span> PDF417 Generator</div>
+    <h1>Barcode Generator</h1>
+    <p class="subtitle">Generate PDF417 barcodes from CSV files or manual input</p>
+  </header>
+
+  <!-- MODE SWITCHER -->
+  <div class="mode-selector">
+    <button class="mode-btn active" id="btnUpload" onclick="setMode('upload')">
+      📂 Upload CSV
+    </button>
+    <button class="mode-btn" id="btnManual" onclick="setMode('manual')">
+      ✍️ Manual Input
+    </button>
+  </div>
+
+  <!-- UPLOAD PANEL -->
+  <div class="panel" id="uploadSection">
+    <div class="panel-label">📎 CSV File</div>
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="fileInput" accept=".csv,.txt" onchange="onFileSelected(this)" />
+      <div class="upload-icon">☁️</div>
+      <div class="upload-text">Drop your CSV here or click to browse</div>
+      <div class="upload-sub">Accepts .csv or .txt files</div>
+      <div class="file-name-display" id="fileNameDisplay"></div>
+    </div>
+    <button class="btn btn-primary" onclick="handleFile()">⚡ Generate Barcodes</button>
+  </div>
+
+  <!-- MANUAL PANEL -->
+  <div class="panel hidden" id="manualSection">
+    <div class="panel-label">✏️ Manual Input (Tab-separated)</div>
+    <textarea id="manualText" placeholder="Name&#9;Street&#9;City&#9;State&#9;ZIP&#9;DL#&#9;DD&#9;IssueDate&#9;DOB&#9;Expiry&#9;Gender&#9;Height&#10;&#10;Paste your tab-separated rows here. Max 25 rows."></textarea>
+    <div class="manual-meta">
+      <span class="input-hint">⇥ Separate fields with tabs · One row = one barcode</span>
+      <span class="row-counter"><span id="rowCounter">0</span> / 25 rows</span>
+    </div>
+    <div class="limit-banner" id="rowLimitMsg">
+      🚫 Limit exceeded — max 25 rows at a time. Remove extra rows to enable generation.
+    </div>
+    <button class="btn btn-primary" id="manualGenerateBtn" onclick="handleManual()">⚡ Generate Barcodes</button>
+  </div>
+
+  <!-- FORMAT GUIDE -->
+  <div class="format-guide" id="formatGuide">
+    <div class="format-guide-title">📋 CSV / Tab Column Order (12 fields)</div>
+    <code>Name &nbsp;·&nbsp; Street &nbsp;·&nbsp; City &nbsp;·&nbsp; State &nbsp;·&nbsp; ZIP &nbsp;·&nbsp; DL# &nbsp;·&nbsp; <strong style="color:#fbbf24">DD</strong> &nbsp;·&nbsp; Issue Date &nbsp;·&nbsp; DOB &nbsp;·&nbsp; Expiry &nbsp;·&nbsp; Gender &nbsp;·&nbsp; Height</code>
+    <code style="margin-top:0.4rem; color:#64748b">Dates as MMDDYYYY &nbsp;·&nbsp; Gender as M or F &nbsp;·&nbsp; Height in inches (e.g. 069)</code>
+  </div>
+
+  <!-- CONTROLS -->
+  <div id="controls" class="hidden">
+    <div class="controls-info">
+      <span id="countDisplay">0</span> barcodes generated
+    </div>
+    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+      <button class="btn btn-secondary" onclick="selectAll()">☑ Select All</button>
+      <button class="btn btn-download-all" onclick="downloadAll()">⬇ Download ZIP</button>
+    </div>
+  </div>
+
+  <!-- OUTPUT -->
+  <div id="output"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-credit">
+      Created with <em class="heart">♥</em> by <span class="footer-name">Redoun</span>
+    </div>
+    <div class="footer-version">PDF417-Gen-v1 &nbsp;·&nbsp; Open Source</div>
+  </footer>
+
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
